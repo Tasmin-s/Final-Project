@@ -80,8 +80,8 @@ def process_data():
     life_expectancy_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectation-at-birth-by-sex.csv'  
     
     # Define paths for the output (cleaned) data files
-    infant_mortality_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/infant-mortality-rate-wdi.csv'
-    life_expectancy_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectation-at-birth-by-sex.csv'  
+    infant_mortality_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/infant-mortality-rate-wdi-cleaned.csv'
+    life_expectancy_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectation-at-birth-by-sex-cleaned.csv'  
     merged_data_path = '/Users/Tasmin/Final-Project/data/processed/merged_data.csv'
     
     # Columns to check for missing values in infant mortality data
@@ -115,6 +115,10 @@ def process_data():
     # Merge the cleaned data on 'year' and 'entity'
     print("Merging Data...")
     merged_df = merge_data(cleaned_infant_mortality_df, cleaned_life_expectancy_df)
+    
+    # Apply aggregation
+    print("Applying Aggregation...")
+    merged_df = aggregated_values(merged_df)
     
     # Save merged data
     save_cleaned_data(merged_df, merged_data_path)

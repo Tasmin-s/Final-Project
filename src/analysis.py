@@ -61,14 +61,14 @@ if __name__ == '__main__':
     print("Merged DataFrame Columns:")
     print(merged_data.columns.tolist())
 
-    # Define columns for analysis
-    infant_mortality_column_female = 'observation_value_-_indicator:_infant_mortality_rate_-_sex:_female_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births'
-    life_expectancy_column_female = 'period_life_expectancy_-_sex:_female_-_age:_0'
+    # Define aggregated columns for analysis
+    aggregated_infant_mortality_column = 'aggregated_infant_mortality'
+    aggregated_life_expectancy_column = 'aggregated_life_expectancy'
 
     # Summary statistics
     print("Calculating Summary Statistics...")
-    infant_mortality_stats = summary_statistics(merged_data, [infant_mortality_column_female])
-    life_expectancy_stats = summary_statistics(merged_data, [life_expectancy_column_female])
+    infant_mortality_stats = summary_statistics(merged_data, [aggregated_infant_mortality_column])
+    life_expectancy_stats = summary_statistics(merged_data, [aggregated_life_expectancy_column])
     print(infant_mortality_stats)
     print(life_expectancy_stats)
 
@@ -78,12 +78,12 @@ if __name__ == '__main__':
 
     # Correlation analysis
     print("Performing Correlation Analysis...")
-    correlation = correlation_analysis(merged_data, infant_mortality_column_female, life_expectancy_column_female)
+    correlation = correlation_analysis(merged_data, aggregated_infant_mortality_column, aggregated_life_expectancy_column)
     print(f"Correlation between Infant Mortality and Life Expectancy: {correlation}")
 
     # Trends over time
     print("Analyzing Trends Over Time...")
-    trends = trends_over_time(merged_data, infant_mortality_column_female, life_expectancy_column_female)
+    trends = trends_over_time(merged_data, aggregated_infant_mortality_column, aggregated_life_expectancy_column)
     print(trends)
 
     # Save trends
@@ -93,10 +93,9 @@ if __name__ == '__main__':
     print("Performing Regression Analysis...")
     regression_result = regression_analysis(
         merged_data,
-        infant_mortality_column_female,
-        ['year', life_expectancy_column_female]
+        aggregated_infant_mortality_column,
+        ['year', aggregated_life_expectancy_column]
     )
     print(regression_result)
-
 
     

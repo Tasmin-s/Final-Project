@@ -53,6 +53,24 @@ def merge_data(infant_mortality_df, life_expectancy_df):
     
     return merged_df
 
+def aggregated_values(merged_df):
+    """
+    Function to compute aggregated values for infant mortality and life expectancy
+    based on both male and female data and add them as new columns in the DataFrame.
+    """
+    merged_df['aggregated_infant_mortality'] = (
+        merged_df['observation_value_-_indicator:_infant_mortality_rate_-_sex:_female_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births'] +
+        merged_df['observation_value_-_indicator:_infant_mortality_rate_-_sex:_male_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births']
+    ) / 2
+
+    merged_df['aggregated_life_expectancy'] = (
+        merged_df['period_life_expectancy_-_sex:_female_-_age:_0'] +
+        merged_df['period_life_expectancy_-_sex:_male_-_age:_0']
+    ) / 2
+
+    return merged_df 
+
+
 def process_data():
     """
     Main function to load, clean, merge, and save data for both datasets.

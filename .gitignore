@@ -5,7 +5,7 @@ __pycache__/
 
 # Ignore data files
 data/raw/
-data/processed/
+# data/processed/
 
 # Ignore environment files
 .env

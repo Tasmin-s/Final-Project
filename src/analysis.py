@@ -97,5 +97,3 @@ if __name__ == '__main__':
         ['year', aggregated_life_expectancy_column]
     )
     print(regression_result)
-
-    

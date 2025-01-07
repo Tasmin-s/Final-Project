@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: python:3.9
+      - image: python:3.10
     steps:
       - checkout
       - run:
@@ -21,3 +21,4 @@ workflows:
   build:
     jobs:
       - build
+

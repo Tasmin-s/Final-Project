@@ -13,6 +13,11 @@ jobs:
           name: Install dependencies
           command: pip install -r requirements.txt
       - run:
+          name: Ensure test data is available
+          command: |
+            mkdir -p data/processed
+            cp tests/test_data/* data/processed/
+      - run:
           name: Run Data Processing Tests
           command: python -m unittest discover -s tests -p "test_data_processing.py"
 

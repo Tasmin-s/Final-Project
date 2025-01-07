@@ -5,7 +5,7 @@ from src.data_processing import load_data, clean_data, merge_data, aggregated_va
 class TestDataProcessing(unittest.TestCase):
 
     def test_no_missing_values_in_gdp_data(self):
-        gdp_life_df = load_data('/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
+        gdp_life_df = load_data('./data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
         columns_to_check = [
             'entity', 'year', 'gdp_per_capita'
         ]
@@ -13,7 +13,7 @@ class TestDataProcessing(unittest.TestCase):
         self.assertEqual(cleaned_data[columns_to_check].isnull().sum().sum(), 0, "Missing values found in critical columns for GDP data.")
 
     def test_no_missing_values_in_healthcare_data(self):
-        healthcare_df = load_data('/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
+        healthcare_df = load_data('./data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
         columns_to_check = [
             'entity', 'year', 'health_expenditure_per_capita_-_total'
         ]
@@ -21,7 +21,7 @@ class TestDataProcessing(unittest.TestCase):
         self.assertEqual(cleaned_data[columns_to_check].isnull().sum().sum(), 0, "Missing values found in critical columns for healthcare data.")
 
     def test_column_consistency_in_gdp_data(self):
-        gdp_life_df = load_data('/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
+        gdp_life_df = load_data('./data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
         columns_to_check = [
             'entity', 'year', 'gdp_per_capita'
         ]
@@ -30,7 +30,7 @@ class TestDataProcessing(unittest.TestCase):
         self.assertEqual(list(cleaned_data.columns), expected_columns, f"Columns do not match for GDP data. Found: {cleaned_data.columns}, Expected: {expected_columns}")
 
     def test_column_consistency_in_healthcare_data(self):
-        healthcare_df = load_data('/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
+        healthcare_df = load_data('./data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
         columns_to_check = [
             'entity', 'year', 'health_expenditure_per_capita_-_total'
         ]
@@ -39,10 +39,10 @@ class TestDataProcessing(unittest.TestCase):
         self.assertEqual(list(cleaned_data.columns), expected_columns, f"Columns do not match for healthcare data. Found: {cleaned_data.columns}, Expected: {expected_columns}")
 
     def test_merge_data_with_gdp_and_healthcare(self):
-        infant_mortality_df = load_data('/Users/Tasmin/Final-Project/data/processed/infant-mortality-rate-wdi-cleaned.csv')
-        life_expectancy_df = load_data('/Users/Tasmin/Final-Project/data/processed/life-expectation-at-birth-by-sex-cleaned.csv')
-        gdp_life_df = load_data('/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
-        healthcare_df = load_data('/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
+        infant_mortality_df = load_data('./data/processed/infant-mortality-rate-wdi-cleaned.csv')
+        life_expectancy_df = load_data('./data/processed/life-expectation-at-birth-by-sex-cleaned.csv')
+        gdp_life_df = load_data('./data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
+        healthcare_df = load_data('./data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
 
         columns_to_check_infant_mortality = [
             'entity', 'year',
@@ -72,6 +72,7 @@ class TestDataProcessing(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
 
 
 

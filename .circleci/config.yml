@@ -10,8 +10,8 @@ jobs:
           name: Install dependencies
           command: pip install -r requirements.txt
       - run:
-          name: Run tests
-          command: pytest unittesting.py
+          name: Run Data Processing Tests
+          command: python -m unittest discover -s tests -p "test_data_processing.py"
 
 workflows:
   version: 2

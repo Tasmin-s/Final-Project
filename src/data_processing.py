@@ -10,7 +10,7 @@ def load_data(file_path):
     
     return pd.read_csv(file_path)
 
-def clean_data(df, columns_to_check):
+def clean_data(df, columns_to_check, essential_columns=None):
     """
     Clean the loaded data:
     - Remove rows with missing values in specific columns.
@@ -34,6 +34,10 @@ def clean_data(df, columns_to_check):
     
     # Remove duplicates
     df.drop_duplicates(inplace=True)
+
+    # Retain only essential columns if specified
+    if essential_columns is not None:
+        df = df[essential_columns]
     
     return df
 
@@ -44,12 +48,18 @@ def save_cleaned_data(df, output_path):
     df.to_csv(output_path, index=False)
     print(f"Cleaned data saved to: {output_path}")
 
-def merge_data(infant_mortality_df, life_expectancy_df):
+def merge_data(infant_mortality_df, life_expectancy_df, gdp_life_df, healthcare_df):
     """
-    Merge the infant mortality and life expectancy datasets on 'year' and 'entity'.
+    Merge the infant mortality, life expectancy, GDP, and healthcare datasets on 'year' and 'entity'.
     """
-    # Merge the two datasets on 'year' and 'entity'
+    # Merge infant mortality and life expectancy datasets
     merged_df = pd.merge(infant_mortality_df, life_expectancy_df, on=['year', 'entity'], how='inner')
+
+    # Merge the result with the GDP dataset
+    merged_df = pd.merge(merged_df, gdp_life_df, on=['year', 'entity'], how='inner')
+
+    # Merge the result with the healthcare dataset
+    merged_df = pd.merge(merged_df, healthcare_df, on=['year', 'entity'], how='inner')
     
     return merged_df
 
@@ -73,15 +83,22 @@ def aggregated_values(merged_df):
 
 def process_data():
     """
-    Main function to load, clean, merge, and save data for both datasets.
+    Main function to load, clean, merge, and save data for all datasets.
+    """
+    """
+    Main function to load, clean, merge, and save data for all datasets.
     """
     # Define paths for the raw data files
     infant_mortality_raw_path = '/Users/Tasmin/Final-Project/data/raw/infant-mortality-rate-wdi.csv'  
-    life_expectancy_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectation-at-birth-by-sex.csv'  
+    life_expectancy_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectation-at-birth-by-sex.csv'
+    gdp_life_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectancy-vs-gdp-per-capita.csv'
+    healthcare_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectancy-vs-health-expenditure.csv'  
     
     # Define paths for the output (cleaned) data files
     infant_mortality_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/infant-mortality-rate-wdi-cleaned.csv'
     life_expectancy_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectation-at-birth-by-sex-cleaned.csv'  
+    gdp_life_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv'
+    healthcare_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-health-expenditure-cleaned.csv'
     merged_data_path = '/Users/Tasmin/Final-Project/data/processed/merged_data.csv'
     
     # Columns to check for missing values in infant mortality data
@@ -99,22 +116,48 @@ def process_data():
         'period_life_expectancy_-_sex:_female_-_age:_0',
         'period_life_expectancy_-_sex:_male_-_age:_0'
     ]
+
+    # Columns to check for missing values in GDP data
+    gdp_life_columns = [
+        'entity',
+        'year',
+        'gdp_per_capita'
+    ]
+
+    # Columns to check for missing values in healthcare expenditure data
+    healthcare_columns = [
+        'entity',
+        'year',
+        'health_expenditure_per_capita_-_total'
+    ]
     
     # Load, clean, and save data for infant mortality
     print("Processing Infant Mortality Data...")
     infant_mortality_df = load_data(infant_mortality_raw_path)
-    cleaned_infant_mortality_df = clean_data(infant_mortality_df, infant_mortality_columns)
+    cleaned_infant_mortality_df = clean_data(infant_mortality_df, infant_mortality_columns, essential_columns=['entity', 'year', 'observation_value_-_indicator:_infant_mortality_rate_-_sex:_female_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births', 'observation_value_-_indicator:_infant_mortality_rate_-_sex:_male_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births'])
     save_cleaned_data(cleaned_infant_mortality_df, infant_mortality_cleaned_path)
+
+    # Load, clean, and save data for GDP per capita
+    print("Processing GDP Data...")
+    gdp_life_df = load_data(gdp_life_raw_path)
+    cleaned_gdp_life_df = clean_data(gdp_life_df, gdp_life_columns, essential_columns=['entity', 'year', 'gdp_per_capita'])
+    save_cleaned_data(cleaned_gdp_life_df, gdp_life_cleaned_path)
+
+    # Load, clean, and save data for healthcare expenditure
+    print("Processing Healthcare Data...")
+    healthcare_df = load_data(healthcare_raw_path)
+    cleaned_healthcare_df = clean_data(healthcare_df, healthcare_columns, essential_columns=['entity', 'year', 'health_expenditure_per_capita_-_total'])
+    save_cleaned_data(cleaned_healthcare_df, healthcare_cleaned_path)
     
     # Load, clean, and save data for life expectancy
     print("Processing Life Expectancy Data...")
     life_expectancy_df = load_data(life_expectancy_raw_path)
-    cleaned_life_expectancy_df = clean_data(life_expectancy_df, life_expectancy_columns)
+    cleaned_life_expectancy_df = clean_data(life_expectancy_df, life_expectancy_columns, essential_columns=['entity', 'year', 'period_life_expectancy_-_sex:_female_-_age:_0', 'period_life_expectancy_-_sex:_male_-_age:_0'])
     save_cleaned_data(cleaned_life_expectancy_df, life_expectancy_cleaned_path)
     
     # Merge the cleaned data on 'year' and 'entity'
     print("Merging Data...")
-    merged_df = merge_data(cleaned_infant_mortality_df, cleaned_life_expectancy_df)
+    merged_df = merge_data(cleaned_infant_mortality_df, cleaned_life_expectancy_df, cleaned_gdp_life_df, cleaned_healthcare_df)
     
     # Apply aggregation
     print("Applying Aggregation...")

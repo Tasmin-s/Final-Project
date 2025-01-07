@@ -172,6 +172,81 @@ def plot_residuals(merged_df):
     plt.savefig(f'{output_dir}/residual_plot.pdf')
     plt.close()
 
+def facet_scatter_graphs_with_regression(df):
+    """
+    Create four scatter plots with regression lines:
+    - Life Expectancy vs GDP
+    - Life Expectancy vs Healthcare Investment
+    - Infant Mortality vs GDP
+    - Infant Mortality vs Healthcare Investment
+    Each plot includes a caption explaining the trends.
+    """
+    fig, axes = plt.subplots(2, 2, figsize=(16, 12))
+
+    # Life Expectancy vs GDP
+    sns.regplot(
+        x='gdp_per_capita',
+        y='aggregated_life_expectancy',
+        data=df,
+        ax=axes[0, 0],
+        scatter_kws={'alpha': 0.7},
+        line_kws={'color': 'blue'}
+    )
+    axes[0, 0].set_title('Life Expectancy vs GDP', fontsize=16)
+    axes[0, 0].set_xlabel('GDP per Capita (USD)', fontsize=14)
+    axes[0, 0].set_ylabel('Life Expectancy (Years)', fontsize=14)
+
+    # Life Expectancy vs Healthcare Investment
+    sns.regplot(
+        x='health_expenditure_per_capita_-_total',
+        y='aggregated_life_expectancy',
+        data=df,
+        ax=axes[0, 1],
+        scatter_kws={'alpha': 0.7},
+        line_kws={'color': 'blue'}
+    )
+    axes[0, 1].set_title('Life Expectancy vs Healthcare Investment', fontsize=16)
+    axes[0, 1].set_xlabel('Healthcare Investment (USD)', fontsize=14)
+    axes[0, 1].set_ylabel('Life Expectancy (Years)', fontsize=14)
+
+    # Infant Mortality vs GDP
+    sns.regplot(
+        x='gdp_per_capita',
+        y='aggregated_infant_mortality',
+        data=df,
+        ax=axes[1, 0],
+        scatter_kws={'alpha': 0.7, 'color': 'red'},
+        line_kws={'color': 'red'}
+    )
+    axes[1, 0].set_title('Infant Mortality vs GDP', fontsize=16)
+    axes[1, 0].set_xlabel('GDP per Capita (USD)', fontsize=14)
+    axes[1, 0].set_ylabel('Infant Mortality (per 100 live births)', fontsize=14)
+
+    # Infant Mortality vs Healthcare Investment
+    sns.regplot(
+        x='health_expenditure_per_capita_-_total',
+        y='aggregated_infant_mortality',
+        data=df,
+        ax=axes[1, 1],
+        scatter_kws={'alpha': 0.7, 'color': 'red'},
+        line_kws={'color': 'red'}
+    )
+    axes[1, 1].set_title('Infant Mortality vs Healthcare Investment', fontsize=16)
+    axes[1, 1].set_xlabel('Healthcare Investment (USD)', fontsize=14)
+    axes[1, 1].set_ylabel('Infant Mortality (per 100 live births)', fontsize=14)
+
+    # Add captions
+    caption = (
+        "These scatter plots examine the relationships between GDP, healthcare investment, "
+        "life expectancy, and infant mortality. Regression lines indicate trends, showing "
+        "how economic and healthcare factors impact public health outcomes."
+    )
+    fig.text(0.5, -0.05, caption, wrap=True, horizontalalignment='center', fontsize=12)
+
+    plt.tight_layout()
+    plt.savefig(f'{output_dir}/facet_scatter_graphs_with_regression.pdf')
+    plt.close()
+
 
 def main():
     """
@@ -180,7 +255,7 @@ def main():
     # Load the merged data
     merged_df = load_merged_data(merged_data_path)
 
-    # plotting visulisations 
+    # Generate visualizations
     print("Generating Scatter Plot with Regression Line...")
     plot_scatter_with_regression(merged_df)
 
@@ -190,11 +265,11 @@ def main():
     print("Generating Residual Plot...")
     plot_residuals(merged_df)
 
-    print("Generating Female Life Expectancy and Infant Mortality Plot...")
-    plot_female_line_graph(merged_df)
+    # Generate scatter graphs with regression lines
+    print("Generating Scatter Graphs with Regression Lines...")
+    facet_scatter_graphs_with_regression(merged_df)
 
-    print("Generating Male Life Expectancy and Infant Mortality Plot...")
-    plot_male_line_graph(merged_df)
+
 
 if __name__ == '__main__':
     main()

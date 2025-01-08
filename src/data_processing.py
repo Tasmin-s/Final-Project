@@ -103,6 +103,7 @@ def process_data():
     
     # Columns to check for missing values in infant mortality data
     infant_mortality_columns = [
+        'entity',
         'year',
         'observation_value_-_indicator:_infant_mortality_rate_-_sex:_female_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births',
         'observation_value_-_indicator:_infant_mortality_rate_-_sex:_male_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births'
@@ -110,6 +111,7 @@ def process_data():
     
     # Columns to check for missing values in life expectancy data
     life_expectancy_columns = [
+        'entity',
         'year',
         'period_life_expectancy_-_sex:_female_-_age:_0',
         'period_life_expectancy_-_sex:_male_-_age:_0'
@@ -142,13 +144,13 @@ def process_data():
     # Load, clean, and save data for healthcare expenditure
     print("Processing Healthcare Data...")
     healthcare_df = load_data(healthcare_raw_path)
-    cleaned_healthcare_df = clean_data(healthcare_df, healthcare_columns, essential_columns=['entity', 'year', 'health_expenditure_per_capita_-_total'])
+    cleaned_healthcare_df = clean_data(healthcare_df, healthcare_columns, essential_columns=['entity','year', 'health_expenditure_per_capita_-_total'])
     save_cleaned_data(cleaned_healthcare_df, healthcare_cleaned_path)
     
     # Load, clean, and save data for life expectancy
     print("Processing Life Expectancy Data...")
     life_expectancy_df = load_data(life_expectancy_raw_path)
-    cleaned_life_expectancy_df = clean_data(life_expectancy_df, life_expectancy_columns, essential_columns=['entity', 'year', 'period_life_expectancy_-_sex:_female_-_age:_0', 'period_life_expectancy_-_sex:_male_-_age:_0'])
+    cleaned_life_expectancy_df = clean_data(life_expectancy_df, life_expectancy_columns, essential_columns=['entity','year', 'period_life_expectancy_-_sex:_female_-_age:_0', 'period_life_expectancy_-_sex:_male_-_age:_0'])
     save_cleaned_data(cleaned_life_expectancy_df, life_expectancy_cleaned_path)
     
     # Merge the cleaned data on 'year' and 'entity'

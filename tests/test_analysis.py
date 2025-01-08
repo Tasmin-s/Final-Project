@@ -13,14 +13,6 @@ import os
 
 class TestAnalysisFunctions(unittest.TestCase):
 
-    def setUp(self):
-        # Create a simple DataFrame for testing
-        self.df = pd.DataFrame({
-            'year': [2000, 2001, 2002, 2003],
-            'aggregated_infant_mortality': [5.2, 5.1, 5.0, 4.8],
-            'aggregated_life_expectancy': [75.3, 75.5, 76.0, 76.2]
-        })
-
     def test_summary_statistics(self):
         # Test summary_statistics function
         stats = summary_statistics(self.df, ['aggregated_infant_mortality'])

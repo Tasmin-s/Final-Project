@@ -9,7 +9,7 @@ from sklearn.metrics import mean_squared_error
 import numpy as np
 
 # Define the path to the merged data
-merged_data_path = '/Users/Tasmin/Final-Project/data/processed/merged_data.csv'
+merged_data_path = './data/processed/merged_data.csv'
 
 # Define the output directory
 output_dir = '/Users/Tasmin/Final-Project/figures'

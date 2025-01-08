@@ -103,7 +103,6 @@ def process_data():
     
     # Columns to check for missing values in infant mortality data
     infant_mortality_columns = [
-        'entity',
         'year',
         'observation_value_-_indicator:_infant_mortality_rate_-_sex:_female_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births',
         'observation_value_-_indicator:_infant_mortality_rate_-_sex:_male_-_wealth_quintile:_total_-_unit_of_measure:_deaths_per_100_live_births'
@@ -111,7 +110,6 @@ def process_data():
     
     # Columns to check for missing values in life expectancy data
     life_expectancy_columns = [
-        'entity',
         'year',
         'period_life_expectancy_-_sex:_female_-_age:_0',
         'period_life_expectancy_-_sex:_male_-_age:_0'
@@ -119,14 +117,12 @@ def process_data():
 
     # Columns to check for missing values in GDP data
     gdp_life_columns = [
-        'entity',
         'year',
         'gdp_per_capita'
     ]
 
     # Columns to check for missing values in healthcare expenditure data
     healthcare_columns = [
-        'entity',
         'year',
         'health_expenditure_per_capita_-_total'
     ]

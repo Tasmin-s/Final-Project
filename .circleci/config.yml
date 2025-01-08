@@ -13,9 +13,6 @@ jobs:
           name: Install dependencies
           command: pip install -r requirements.txt
       - run:
-          name: Debug Processed Data Directory
-          command: ls -R ./data/processed
-      - run:
           name: Run Data Processing Tests
           command: python -m unittest discover -s tests -p "test_data_processing.py"
       - run:

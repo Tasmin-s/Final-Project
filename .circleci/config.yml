@@ -13,26 +13,29 @@ jobs:
           name: Install dependencies
           command: pip install -r requirements.txt
       - run:
+          name: Debug Raw Data Directory
+          command: ls -R data/raw
+      - run:
           name: Run Data Processing Tests
           command: python -m unittest discover -s tests -p "test_data_processing.py"
-      - run:
-          name: Run Analysis Tests
-          command: python -m unittest discover -s tests -p "test_analysis.py"
       - run:
           name: Generate Merged Data
           command: python src/data_processing.py
       - run:
-          name: Debug Directory Structure
+          name: Debug Processed Directory
           command: ls -R data/processed
+      - run:
+          name: Run Analysis Tests
+          command: python -m unittest discover -s tests -p "test_analysis.py"
       - run:
           name: Run Visualisation Tests
           command: python -m unittest discover -s tests -p "test_visulisations.py"
-
 
 workflows:
   version: 2
   build:
     jobs:
       - build
+
 
 

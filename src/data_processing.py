@@ -89,17 +89,17 @@ def process_data():
     Main function to load, clean, merge, and save data for all datasets.
     """
     # Define paths for the raw data files
-    infant_mortality_raw_path = '/Users/Tasmin/Final-Project/data/raw/infant-mortality-rate-wdi.csv'  
-    life_expectancy_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectation-at-birth-by-sex.csv'
-    gdp_life_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectancy-vs-gdp-per-capita.csv'
-    healthcare_raw_path = '/Users/Tasmin/Final-Project/data/raw/life-expectancy-vs-health-expenditure.csv'  
+    infant_mortality_raw_path = './data/raw/infant-mortality-rate-wdi.csv'  
+    life_expectancy_raw_path = './data/raw/life-expectation-at-birth-by-sex.csv'
+    gdp_life_raw_path = './data/raw/life-expectancy-vs-gdp-per-capita.csv'
+    healthcare_raw_path = './data/raw/life-expectancy-vs-health-expenditure.csv'  
     
     # Define paths for the output (cleaned) data files
-    infant_mortality_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/infant-mortality-rate-wdi-cleaned.csv'
-    life_expectancy_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectation-at-birth-by-sex-cleaned.csv'  
-    gdp_life_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv'
-    healthcare_cleaned_path = '/Users/Tasmin/Final-Project/data/processed/life-expectancy-vs-health-expenditure-cleaned.csv'
-    merged_data_path = '/Users/Tasmin/Final-Project/data/processed/merged_data.csv'
+    infant_mortality_cleaned_path = './data/processed/infant-mortality-rate-wdi-cleaned.csv'
+    life_expectancy_cleaned_path = './data/processed/life-expectation-at-birth-by-sex-cleaned.csv'  
+    gdp_life_cleaned_path = './data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv'
+    healthcare_cleaned_path = './data/processed/life-expectancy-vs-health-expenditure-cleaned.csv'
+    merged_data_path = './data/processed/merged_data.csv'
     
     # Columns to check for missing values in infant mortality data
     infant_mortality_columns = [

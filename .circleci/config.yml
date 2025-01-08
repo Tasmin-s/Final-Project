@@ -18,6 +18,9 @@ jobs:
       - run:
           name: Run Analysis Tests
           command: python -m unittest discover -s tests -p "test_analysis.py"
+      - run:
+          name: Run Visualisation Tests
+          command: python -m unittest discover -s tests -p "test_visulisations.py"
 
 workflows:
   version: 2

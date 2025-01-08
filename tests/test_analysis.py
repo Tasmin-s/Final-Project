@@ -13,6 +13,16 @@ import os
 
 class TestAnalysisFunctions(unittest.TestCase):
 
+    def setUp(self):
+        """
+        Initialize test DataFrame for use in all test cases.
+        """
+        self.df = pd.DataFrame({
+            'year': [2000, 2001, 2002],
+            'aggregated_infant_mortality': [5.5, 5.3, 5.1],
+            'aggregated_life_expectancy': [72.5, 73.0, 73.5]
+        })
+
     def test_summary_statistics(self):
         # Test summary_statistics function
         stats = summary_statistics(self.df, ['aggregated_infant_mortality'])
@@ -28,7 +38,7 @@ class TestAnalysisFunctions(unittest.TestCase):
             self.df, 'aggregated_infant_mortality', 'aggregated_life_expectancy'
         )
         self.assertIsInstance(correlation, float)
-        expected_correlation = self.df[['aggregated_infant_mortality', 'aggregated_life_expectancy']].corr().iloc[0,1]
+        expected_correlation = self.df[['aggregated_infant_mortality', 'aggregated_life_expectancy']].corr().iloc[0, 1]
         self.assertAlmostEqual(correlation, expected_correlation)
 
     def test_trends_over_time(self):

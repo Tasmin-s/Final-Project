@@ -19,8 +19,15 @@ jobs:
           name: Run Analysis Tests
           command: python -m unittest discover -s tests -p "test_analysis.py"
       - run:
+          name: Generate Merged Data
+          command: python src/data_processing.py
+      - run:
+          name: Debug Directory Structure
+          command: ls -R data/processed
+      - run:
           name: Run Visualisation Tests
           command: python -m unittest discover -s tests -p "test_visulisations.py"
+
 
 workflows:
   version: 2

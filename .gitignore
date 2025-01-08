@@ -4,7 +4,7 @@ __pycache__/
 *.pyo
 
 # Ignore data files
-data/raw/
+# data/raw/
 # data/processed/
 
 # Ignore environment files

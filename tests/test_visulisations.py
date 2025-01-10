@@ -13,46 +13,36 @@ from src.visulisations import (
 )
 
 class TestVisualisations(unittest.TestCase):
+    # Test for loading merged data correctly
     def test_load_merged_data(self):
-        """
-        Test if the merged data loads correctly.
-        """
         merged_df = load_merged_data(merged_data_path)
         self.assertGreater(len(merged_df), 0, "Merged data is empty.")
         self.assertIn('gdp_per_capita', merged_df.columns, "'gdp_per_capita' column not found in merged data.")
         self.assertIn('aggregated_life_expectancy', merged_df.columns, "'aggregated_life_expectancy' column not found in merged data.")
 
+    # Test for generating scatter plot with regression line
     def test_plot_scatter_with_regression(self):
-        """
-        Test scatter plot with regression line generation.
-        """
         merged_df = load_merged_data(merged_data_path)
         output_file = f'{output_dir}/plot_scatter_with_regression.pdf'
         plot_scatter_with_regression(merged_df)
         self.assertTrue(os.path.exists(output_file), "Scatter plot with regression PDF was not created.")
 
+    # Test for generating life expectancy vs infant mortality plot
     def test_plot_life_expectancy_vs_infant_mortality(self):
-        """
-        Test life expectancy vs infant mortality plot generation.
-        """
         merged_df = load_merged_data(merged_data_path)
         output_file = f'{output_dir}/life_expectancy_and_infant_mortality_female_and_male.pdf'
         plot_life_expectancy_vs_infant_mortality(merged_df)
         self.assertTrue(os.path.exists(output_file), "Life expectancy vs infant mortality PDF was not created.")
 
+    # Test for generating facet scatter graphs with regression lines
     def test_facet_scatter_graphs_with_regression(self):
-        """
-        Test facet scatter graphs with regression lines generation.
-        """
         merged_df = load_merged_data(merged_data_path)
         output_file = f'{output_dir}/facet_scatter_graphs_with_regression.pdf'
         facet_scatter_graphs_with_regression(merged_df)
         self.assertTrue(os.path.exists(output_file), "Facet scatter graphs with regression PDF was not created.")
 
+    # Test for regression line accuracy in scatter plot
     def test_regression_line_in_scatter_plot(self):
-        """
-        Test the regression line in the Scatter Plot of Infant Mortality vs. Life Expectancy.
-        """
         merged_df = load_merged_data(merged_data_path)
         X = merged_df[['aggregated_infant_mortality']]
         y = merged_df['aggregated_life_expectancy']
@@ -65,10 +55,8 @@ class TestVisualisations(unittest.TestCase):
         self.assertLess(mse, 50, f"Mean squared error is too high: {mse}")
         self.assertEqual(len(y_pred), len(y), "The number of predicted values does not match the actual values.")
 
+    # Test for regression lines in facet scatter graphs
     def test_regression_line_in_facet_scatter_graphs(self):
-        """
-        Test regression lines in the facet scatter graphs for GDP and Healthcare.
-        """
         merged_df = load_merged_data(merged_data_path)
 
         X_gdp = merged_df[['gdp_per_capita']]

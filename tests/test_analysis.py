@@ -14,7 +14,7 @@ def load_merged_data():
     return load_data(merged_data)
 
 class TestAnalysisFunctions(unittest.TestCase):
-
+    #  test summary statistice 
     def test_summary_statistics(self):
         """
         Test the summary_statistics function using the actual merged dataset.
@@ -26,7 +26,7 @@ class TestAnalysisFunctions(unittest.TestCase):
         self.assertIn('variance', stats.columns)
         expected_mean = df['aggregated_infant_mortality'].mean()
         self.assertAlmostEqual(stats.at['aggregated_infant_mortality', 'mean'], expected_mean)
-
+    # test correlation analysis
     def test_correlation_analysis_with_test(self):
         """
         Test the correlation analysis with hypothesis testing using the actual merged dataset.

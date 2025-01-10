@@ -3,7 +3,7 @@ import pandas as pd
 from src.data_processing import load_data, clean_data, merge_data, aggregated_values
 
 class TestDataProcessing(unittest.TestCase):
-
+    # Test to check for missing values in GDP data after cleaning
     def test_no_missing_values_in_gdp_data(self):
         gdp_life_df = load_data('./data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
         columns_to_check = [
@@ -12,6 +12,7 @@ class TestDataProcessing(unittest.TestCase):
         cleaned_data = clean_data(gdp_life_df, columns_to_check)
         self.assertEqual(cleaned_data[columns_to_check].isnull().sum().sum(), 0, "Missing values found in critical columns for GDP data.")
 
+    # Test to check for missing values in healthcare data after cleaning
     def test_no_missing_values_in_healthcare_data(self):
         healthcare_df = load_data('./data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
         columns_to_check = [
@@ -20,6 +21,7 @@ class TestDataProcessing(unittest.TestCase):
         cleaned_data = clean_data(healthcare_df, columns_to_check)
         self.assertEqual(cleaned_data[columns_to_check].isnull().sum().sum(), 0, "Missing values found in critical columns for healthcare data.")
 
+    # Test to ensure GDP data columns are consistent after cleaning
     def test_column_consistency_in_gdp_data(self):
         gdp_life_df = load_data('./data/processed/life-expectancy-vs-gdp-per-capita-cleaned.csv')
         columns_to_check = [
@@ -29,6 +31,7 @@ class TestDataProcessing(unittest.TestCase):
         expected_columns = ['entity', 'year', 'gdp_per_capita']
         self.assertEqual(list(cleaned_data.columns), expected_columns, f"Columns do not match for GDP data. Found: {cleaned_data.columns}, Expected: {expected_columns}")
 
+    # Test to ensure healthcare data columns are consistent after cleaning
     def test_column_consistency_in_healthcare_data(self):
         healthcare_df = load_data('./data/processed/life-expectancy-vs-health-expenditure-cleaned.csv')
         columns_to_check = [
@@ -38,6 +41,7 @@ class TestDataProcessing(unittest.TestCase):
         expected_columns = ['entity', 'year', 'health_expenditure_per_capita_-_total']
         self.assertEqual(list(cleaned_data.columns), expected_columns, f"Columns do not match for healthcare data. Found: {cleaned_data.columns}, Expected: {expected_columns}")
 
+    # Test to verify correct merging of GDP, healthcare, life expectancy, and infant mortality datasets
     def test_merge_data_with_gdp_and_healthcare(self):
         infant_mortality_df = load_data('./data/processed/infant-mortality-rate-wdi-cleaned.csv')
         life_expectancy_df = load_data('./data/processed/life-expectation-at-birth-by-sex-cleaned.csv')

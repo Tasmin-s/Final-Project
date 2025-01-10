@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import pearsonr
 from matplotlib.backends.backend_pdf import PdfPages
 
+# create summary statistics
 def summary_statistics(df, columns):
     """
     Calculate summary statistics for specified columns.
@@ -11,6 +12,7 @@ def summary_statistics(df, columns):
     summary['variance'] = df[columns].var()
     return summary
 
+# carry out hypothesis test 
 def correlation_analysis_with_test(df, mortality_column, life_expectancy_column, alpha=0.05):
     """
     Compute the correlation between infant mortality and life expectancy

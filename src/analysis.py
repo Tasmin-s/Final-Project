@@ -1,99 +1,80 @@
 import pandas as pd
-import statsmodels.api as sm
+import matplotlib.pyplot as plt
+from scipy.stats import pearsonr
+from matplotlib.backends.backend_pdf import PdfPages
 
-# 1. Compute Summary Statistics for Infant Mortality and Life Expectancy
 def summary_statistics(df, columns):
     """
-    Function to calculate summary statistics for specified columns.
+    Calculate summary statistics for specified columns.
     """
     summary = df[columns].describe().transpose()
     summary['variance'] = df[columns].var()
     return summary
 
-# 2. Calculate Correlation Between Infant Mortality and Life Expectancy
-def correlation_analysis(df, mortality_column, life_expectancy_column):
+def correlation_analysis_with_test(df, mortality_column, life_expectancy_column, alpha=0.05):
     """
-    Function to compute the correlation between infant mortality rate and life expectancy.
+    Compute the correlation between infant mortality and life expectancy
+    and perform a hypothesis test.
+    
+    H0: There is no correlation between infant mortality and life expectancy.
+    H1: There is a significant correlation between infant mortality and life expectancy.
     """
-    correlation = df[[mortality_column, life_expectancy_column]].corr().iloc[0, 1]
-    return correlation
+    correlation, p_value = pearsonr(df[mortality_column], df[life_expectancy_column])
+    
+    if p_value < alpha:
+        result = "Reject the null hypothesis (H0): Significant correlation exists."
+    else:
+        result = "Fail to reject the null hypothesis (H0): No significant correlation."
 
-# 3. Analyze Trends Over Time
-def trends_over_time(df, mortality_column, life_expectancy_column, group_by_column='year'):
-    """
-    Function to analyze trends in infant mortality and life expectancy over time.
-    """
-    trends = df.groupby(group_by_column)[[mortality_column, life_expectancy_column]].mean()
-    trends['mortality_rate_change'] = trends[mortality_column].pct_change()
-    trends['life_expectancy_change'] = trends[life_expectancy_column].pct_change()
-    return trends
+    return correlation, p_value, result
 
-# 4. Perform Regression Analysis to Understand Relationships Between Variables
-def regression_analysis(df, y_column, X_columns):
+def save_summary_to_pdf(summary_df, output_path, caption):
     """
-    Function to perform linear regression analysis to assess the impact of various factors.
+    Save summary statistics to a PDF with a table and caption.
     """
-    X = df[X_columns]
-    X = sm.add_constant(X)  # Adds an intercept to the model
-    y = df[y_column]
-
-    model = sm.OLS(y, X).fit()  # Fit the model
-    return model.summary()
-
-# 5. Save Analysis Results to CSV
-def save_results_to_csv(df, file_path):
-    """
-    Save the results of the analysis to a CSV file.
-    """
-    df.to_csv(file_path, index=False)
+    fig, ax = plt.subplots(figsize=(10, 4))
+    ax.axis('tight')
+    ax.axis('off')
+    
+    table = ax.table(cellText=summary_df.round(2).values,
+                     colLabels=summary_df.columns,
+                     rowLabels=summary_df.index,
+                     cellLoc='center',
+                     loc='center')
+    table.auto_set_font_size(False)
+    table.set_fontsize(10)
+    table.scale(1.2, 1.2)
+    
+    plt.figtext(0.5, 0.02, caption, wrap=True, horizontalalignment='center', fontsize=12)
+    
+    with PdfPages(output_path) as pdf:
+        pdf.savefig(fig, bbox_inches='tight')
+        plt.close()
 
 if __name__ == '__main__':
-    # File paths
     merged_data_path = '/Users/Tasmin/Final-Project/data/processed/merged_data.csv'
-    trends_output_path = '/Users/Tasmin/Final-Project/data/processed/trends.csv'
-    stats_output_path = '/Users/Tasmin/Final-Project/data/processed/summary_statistics.csv'
-
-    # Load the preprocessed and merged data
+    pdf_output_path = '/Users/Tasmin/Final-Project/data/processed/summary_statistics.pdf'
+    
     print("Loading Processed Data...")
     merged_data = pd.read_csv(merged_data_path)
-
-    # Debug merged DataFrame columns
-    print("Merged DataFrame Columns:")
-    print(merged_data.columns.tolist())
-
-    # Define aggregated columns for analysis
+    
     aggregated_infant_mortality_column = 'aggregated_infant_mortality'
     aggregated_life_expectancy_column = 'aggregated_life_expectancy'
-
-    # Summary statistics
+    
     print("Calculating Summary Statistics...")
-    infant_mortality_stats = summary_statistics(merged_data, [aggregated_infant_mortality_column])
-    life_expectancy_stats = summary_statistics(merged_data, [aggregated_life_expectancy_column])
-    print(infant_mortality_stats)
-    print(life_expectancy_stats)
-
-    # Save summary statistics
-    summary_stats_df = pd.concat([infant_mortality_stats, life_expectancy_stats])
-    save_results_to_csv(summary_stats_df, stats_output_path)
-
-    # Correlation analysis
-    print("Performing Correlation Analysis...")
-    correlation = correlation_analysis(merged_data, aggregated_infant_mortality_column, aggregated_life_expectancy_column)
-    print(f"Correlation between Infant Mortality and Life Expectancy: {correlation}")
-
-    # Trends over time
-    print("Analyzing Trends Over Time...")
-    trends = trends_over_time(merged_data, aggregated_infant_mortality_column, aggregated_life_expectancy_column)
-    print(trends)
-
-    # Save trends
-    save_results_to_csv(trends, trends_output_path)
-
-    # Regression analysis
-    print("Performing Regression Analysis...")
-    regression_result = regression_analysis(
+    summary_stats = summary_statistics(merged_data, [aggregated_infant_mortality_column, aggregated_life_expectancy_column])
+    print(summary_stats)
+    
+    caption_text = "Table 1: Summary Statistics for Aggregated Infant Mortality and Life Expectancy."
+    save_summary_to_pdf(summary_stats, pdf_output_path, caption_text)
+    
+    print("Performing Correlation Analysis with Hypothesis Test...")
+    correlation, p_value, test_result = correlation_analysis_with_test(
         merged_data,
         aggregated_infant_mortality_column,
-        ['year', aggregated_life_expectancy_column]
+        aggregated_life_expectancy_column
     )
-    print(regression_result)
+    
+    print(f"Pearson Correlation Coefficient: {correlation}")
+    print(f"P-value: {p_value}")
+    print(f"Hypothesis Test Result: {test_result}")
